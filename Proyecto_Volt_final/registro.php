@@ -81,27 +81,53 @@
     $contraseña = sha1(md5($_POST["contraseña_registro"]));
     $telefono=$_POST["telefono_registro"];
     $ciudad=$_POST["ciudad_registro"];
-    #creamos una sentencia SQL que compruebe si el usuario existe o no
-    $sql = "select * from registro_usuario where DNI='".$dni."'";
-    $ronda=mysqli_query($conexion,$sql);
-    $existe=mysqli_num_rows($ronda);
+    // Eliminar espacios en blanco y convertir a mayúsculas
+    $dni2 = trim(strtoupper($dni));
+    // Validar el formato del DNI con una expresión regular
+    if (preg_match('/^[0-9]{8}[A-Z]$/', $dni2)) {
+      // Eliminar espacios en blanco al inicio y al final del valor del correo electrónico
+      $correo2 = trim($correo);
+
+      // Validar el formato del correo electrónico con una expresión regular
+      if (filter_var($correo2, FILTER_VALIDATE_EMAIL)) {
+          // Eliminar espacios en blanco al inicio y al final del valor del número de teléfono
+          $telefono2 = trim($telefono);
+
+          // Validar el formato del número de teléfono con una expresión regular
+          if (preg_match('/^\d{9}$/', $telefono2)) {
+              #creamos una sentencia SQL que compruebe si el usuario existe o no
+              $sql = "select * from registro_usuario where DNI='".$dni."'";
+              $ronda=mysqli_query($conexion,$sql);
+              $existe=mysqli_num_rows($ronda);
 
 
-    if ($existe==1){
-      #la variable global se modifica si existe el usuario y recarga la pagina para mostrarlo
-      $_SESSION['error_registro']="El dni ya existe";
+              if ($existe==1){
+                #la variable global se modifica si existe el usuario y recarga la pagina para mostrarlo
+                $_SESSION['error_registro']="El dni ya existe";
+                header("location: registro.php");
+              }
+              #hacemos la sentencia que guardara los datos en la base
+              $ssql = "insert into registro_usuario (DNI, nombre, correo, telefono, ciudad, contraseña) values ('$dni','$nombre','$correo','$telefono','$ciudad','$contraseña')";
+
+              #ejecutamos la sentencia y nos muestra si se ha ejecutado correctamente y nos da un boton para ir al inicio de sesion
+              if($conexion->query($ssql)) {
+                echo "<p>Registro exitoso</p>";
+              } else {
+                echo "<p>Hubo un error al ejecutar la sentencia de inserción: {$conexion->error}</p>";
+              }
+              $conexion->close();
+          } else {
+              $_SESSION['error_registro']="El telefono no es valido";
+              header("location: registro.php");
+          }
+      } else {
+          $_SESSION['error_registro']="El correo no es valido";
+          header("location: registro.php");
+      }   
+    } else {
+      $_SESSION['error_registro']="El dni no es valido";
       header("location: registro.php");
     }
-    #hacemos la sentencia que guardara los datos en la base
-    $ssql = "insert into registro_usuario (DNI, nombre, correo, telefono, ciudad, contraseña) values ('$dni','$nombre','$correo','$telefono','$ciudad','$contraseña')";
-
-    #ejecutamos la sentencia y nos muestra si se ha ejecutado correctamente y nos da un boton para ir al inicio de sesion
-    if($conexion->query($ssql)) {
-      echo "<p>Registro exitoso</p>";
-    } else {
-      echo "<p>Hubo un error al ejecutar la sentencia de inserción: {$conexion->error}</p>";
-    }
-    $conexion->close();
   ?>
   <p><a href="loginvista.php">Ir a Iniciar Sesion</a></p>
   <?php

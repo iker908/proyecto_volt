@@ -13,6 +13,7 @@
     <?php
     #empieza la sesion y hace lo mismo que el registro y login
     session_start();
+    $error=$_SESSION['error_cuest'];
     $_SESSION["lista"]=[];
     if (!$_POST) {
     ?>
@@ -21,7 +22,6 @@
     <h1>Questionario</h1>
       <div class="contenedor">
       <p style="font-size: 20px; text-align: left;">Introduzca los datos de su factura<p>
-      <p style="font-size: 20px; text-align: left;">Cuando introduzca los datos use "." en vez de "," en los numeros, por ejemplo en vez de 10,10 ponga 10.10<p>
         <div>
           <p></br></p>
     </div>
@@ -73,6 +73,7 @@
          
          </div>
          <input type="submit" value="Siguiente" class="button">
+         <p><?php echo $error ?></p>
      </div>
     </form>
     <?php
@@ -91,6 +92,100 @@
     $dias=$_POST["dias_prueba"];
     $contador=$_POST["contador_prueba"];
     $descuento=$_POST["descuento_prueba"];
+
+    // Validar si es un número
+    if (!is_numeric($consumo)) {
+      $_SESSION['error_cuest']="El consumo no es un numero valido";
+      header("location: cuestionario_comparacion.php");
+    }
+
+    // Reemplazar comas por puntos si es necesario
+    $consumo = str_replace(',', '.', $consumo);
+
+    // Validar si es un número
+    if (!is_numeric($consumo_p)) {
+      $_SESSION['error_cuest']="El consumo punta no es un numero valido";
+      header("location: cuestionario_comparacion.php");
+    }
+
+    // Reemplazar comas por puntos si es necesario
+    $consumo_p = str_replace(',', '.', $consumo_p);
+
+    // Validar si es un número
+    if (!is_numeric($consumo_v)) {
+      $_SESSION['error_cuest']="El consumo valle no es un numero valido";
+      header("location: cuestionario_comparacion.php");
+    }
+
+    // Reemplazar comas por puntos si es necesario
+    $consumo_v = str_replace(',', '.', $consumo_v);
+
+    // Validar si es un número
+    if (!is_numeric($consumo_l)) {
+      $_SESSION['error_cuest']="El consumo llano no es un numero valido";
+      header("location: cuestionario_comparacion.php");
+    }
+
+    // Reemplazar comas por puntos si es necesario
+    $consumo_l = str_replace(',', '.', $consumo_l);
+
+    // Validar si es un número
+    if (!is_numeric($potencia_p)) {
+      $_SESSION['error_cuest']="La potencia punta no es un numero valido";
+      header("location: cuestionario_comparacion.php");
+    }
+
+    // Reemplazar comas por puntos si es necesario
+    $potencia_p = str_replace(',', '.', $potencia_p);
+
+    // Validar si es un número
+    if (!is_numeric($potencia_v)) {
+      $_SESSION['error_cuest']="La potencia valle no es un numero valido";
+      header("location: cuestionario_comparacion.php");
+    }
+
+    // Reemplazar comas por puntos si es necesario
+    $potencia_v = str_replace(',', '.', $potencia_v);
+
+    // Validar si es un número
+    if (!is_numeric($descuento)) {
+      $_SESSION['error_cuest']="El descuento no es un numero valido";
+      header("location: cuestionario_comparacion.php");
+    }
+
+    // Reemplazar comas por puntos si es necesario
+    $descuento = str_replace(',', '.', $descuento);
+
+    // Validar si es un número
+    if (!is_numeric($dias)) {
+      $_SESSION['error_cuest']="Los dias no son un numero valido";
+      header("location: cuestionario_comparacion.php");
+    }
+
+    // Reemplazar comas por puntos si es necesario
+    $dias = str_replace(',', '.', $dias);
+
+    // Validar si es un número
+    if (!is_numeric($contador)) {
+      $_SESSION['error_cuest']="El contador no es un numero valido";
+      header("location: cuestionario_comparacion.php");
+    }
+
+    // Reemplazar comas por puntos si es necesario
+    $contador = str_replace(',', '.', $contador);
+
+    // Validar si es un número
+    if (!is_numeric($coste)) {
+      $_SESSION['error_cuest']="El precio total no es un numero valido";
+      header("location: cuestionario_comparacion.php");
+    }
+
+    // Reemplazar comas por puntos si es necesario
+    $coste = str_replace(',', '.', $coste);
+
+
+
+
     #inserta los datos en la tabla de facturas
     $ssql = "insert into factura (dni_usuario, consumo, consumo_punta, consumo_valle, consumo_llano, potencia_punta, potencia_valle, descuento, dias, contador, coste) values ('$dni','$consumo','$consumo_p','$consumo_v','$consumo_l','$potencia_p','$potencia_v','$descuento','$dias','$contador','$coste')";
     #si acierta convierte todas las variables en variables globales y pasa al siguiente cuestionario
