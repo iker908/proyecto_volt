@@ -278,20 +278,20 @@
            echo " <section class='contenedor-6'>
            <div class='contenedor-6_paquete'>
                <div class='paquete'>
-               <img src=$img1 width='200'>
-               <h3>$array_plan[$a]</h3>
+                  <img src=$img1 width='200'>
+                   <h3>$array_plan[$a]</h3>
                    <p>Potencia total: $array_potencia[$a]</p>
                    <p>Consumo total con descuento: $array_consumo[$a]</p>
                    <p>Estimación total: $array_total[$a]</p>
-                   <a href='planes/$array_plan[$a].php'>Información mas detallada</a    
+                   <a href='planes/$array_plan[$a].php'>Información mas detallada</a>    
                </div>
                <div class='paquete'>
-               <img src=$img1 width='200'>
+               <img src=$img2 width='200'>
                <h3>$array_plan[$b]</h3>
                    <p>Potencia total: $array_potencia[$b]</p>
                    <p>Consumo total con descuento: $array_consumo[$b]</p>
                    <p>Estimación total: $array_total[$b]</p>
-                   <a href='planes/$array_plan[$b].php'>Información mas detallada</a
+                   <a href='planes/$array_plan[$b].php'>Información mas detallada</a    
                </div>
            </div>
        </section>";
